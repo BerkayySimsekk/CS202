@@ -35,11 +35,12 @@ BST::BST(int keys[], int size) {
     cout << "BST with size " << size << " created." << endl;
 }
 
-//there are two different cases for the destructor depending on which constructor type is used
+//destructor
 BST::~BST() {
     destroyTree(root);
 }
 
+//helper method to delete the tree, used in destructor
 void BST::destroyTree(BSTNode* ptr) {
     if (ptr != nullptr) {
         destroyTree(ptr->leftChildPtr);

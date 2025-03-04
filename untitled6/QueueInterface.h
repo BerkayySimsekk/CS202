@@ -1,3 +1,12 @@
+/**
+* Title: Binary Search Trees
+* Author : Berkay Simsek
+* ID: 22303338
+* Section : 2
+* Homework : 1
+* Description : This file contains the pure virtual functions of queue that must be overridden in the derived classes; in this case, "ListQueue.cpp" file.
+*/
+
 #ifndef QUEUEINTERFACE_H
 #define QUEUEINTERFACE_H
 

@@ -4,15 +4,15 @@
 * ID: 22303338
 * Section : 2
 * Homework : 1
-* Description :
+* Description : This file contains the implementations of the methods that can be seen in the header file of binary search tree. The "cmath" C++ library header
+* is only used for the power function (pow(x,y)).
 */
 
 #include "BST.h"
 
-#include "ListQueue.cpp"
-
 #include <iostream>
 #include <cmath>
+#include <climits>
 
 using namespace std;
 
@@ -20,45 +20,44 @@ using namespace std;
 BST::BST() {
     root = nullptr;
     levelOfKey = 1;
-    numberOfNodes = 0;
-    keysOfNodes = nullptr;
-    defaultConstructorIsUsed = true;
+
+    cout << "BST with size 0 created." << endl;
 }
 
 //if the keys and the size are given for the constructor, BST is created using those values
 BST::BST(int keys[], int size) {
     root = nullptr;
     levelOfKey = 1;
-    numberOfNodes = size;
-    keysOfNodes = new int[numberOfNodes];
-    defaultConstructorIsUsed = false;
-
-    for (int i = 0; i < numberOfNodes; i++)
-        keysOfNodes[i] = keys[i];
 
     for(int i = 0; i < size; i++)
         insertKeyForConstructor(keys[i]);
+
+    cout << "BST with size " << size << " created." << endl;
 }
 
+//there are two different cases for the destructor depending on which constructor type is used
 BST::~BST() {
-    if(keysOfNodes == nullptr) {
-        int index = 0;
-        keysOfNodes = new int[numberOfNodes];
-        inorderToArray(root, keysOfNodes, index);
-    }
-
-    for(int i = 0; i < numberOfNodes; i++)
-        deleteKeyForConstructor(keysOfNodes[i]);
+    destroyTree(root);
 }
 
-int BST::getHeight(TreeNode* node) {
+void BST::destroyTree(BSTNode* ptr) {
+    if (ptr != nullptr) {
+        destroyTree(ptr->leftChildPtr);
+        destroyTree(ptr->rightChildPtr);
+        delete ptr;
+    }
+}
+
+//helper method to find the height of the tree
+int BST::getHeight(BSTNode* node) {
     if (node == nullptr) {
         return -1;
     }
     return max(getHeight(node->leftChildPtr), getHeight(node->rightChildPtr)) + 1;
 }
 
-void BST::inorderToArray(TreeNode* node, int arr[], int &index) {
+//helper method to turn the BST into an array, used in destructor
+void BST::inorderToArray(BSTNode* node, int arr[], int &index) {
     if (node == nullptr)
         return;
 
@@ -68,9 +67,9 @@ void BST::inorderToArray(TreeNode* node, int arr[], int &index) {
 }
 
 //helper method to insert items
-TreeNode* BST::insert(TreeNode* root, int value) {
+BSTNode* BST::insert(BSTNode* root, int value) {
     if(root == nullptr)
-        return new TreeNode(value, nullptr, nullptr);
+        return new BSTNode(value, nullptr, nullptr);
 
     if(value < root->item)
         root->leftChildPtr = insert(root->leftChildPtr, value);
@@ -81,7 +80,7 @@ TreeNode* BST::insert(TreeNode* root, int value) {
 }
 
 //helper method to check whether a key exists in the BST
-bool BST::search(TreeNode* node, int key) {
+bool BST::search(BSTNode* node, int key) {
     if(node == nullptr)
         return false;
 
@@ -98,7 +97,7 @@ bool BST::search(TreeNode* node, int key) {
 }
 
 //helper method to find the node with the minimum value, used in deletion
-TreeNode* findMin(TreeNode* node) {
+BSTNode* findMin(BSTNode* node) {
     while (node->leftChildPtr != nullptr) {
         node = node->leftChildPtr;
     }
@@ -107,8 +106,9 @@ TreeNode* findMin(TreeNode* node) {
 
 
 //helper method to delete an item from the BST
-TreeNode* BST::deleteNode(TreeNode* node, int key) {
-    if (node == nullptr) return node;
+BSTNode* BST::deleteNode(BSTNode* node, int key) {
+    if (node == nullptr)
+        return node;
 
     if (key < node->item) {
         node->leftChildPtr = deleteNode(node->leftChildPtr, key);
@@ -116,16 +116,16 @@ TreeNode* BST::deleteNode(TreeNode* node, int key) {
         node->rightChildPtr = deleteNode(node->rightChildPtr, key);
     } else {
         if (node->leftChildPtr == nullptr) {
-            TreeNode* temp = node->rightChildPtr;
+            BSTNode* temp = node->rightChildPtr;
             delete node;
             return temp;
         } else if (node->rightChildPtr == nullptr) {
-            TreeNode* temp = node->leftChildPtr;
+            BSTNode* temp = node->leftChildPtr;
             delete node;
             return temp;
         }
 
-        TreeNode* temp = findMin(node->rightChildPtr);  // Find inorder successor
+        BSTNode* temp = findMin(node->rightChildPtr);  // Find inorder successor
         node->item = temp->item;  // Replace node with successor value
         node->rightChildPtr = deleteNode(node->rightChildPtr, temp->item); // Delete successor
     }
@@ -133,7 +133,7 @@ TreeNode* BST::deleteNode(TreeNode* node, int key) {
 }
 
 //helper method for inorder traversal
-void BST::inorder(TreeNode* node, bool& first) {
+void BST::inorder(BSTNode* node, bool& first) {
     if (node == nullptr)
         return;
 
@@ -146,7 +146,7 @@ void BST::inorder(TreeNode* node, bool& first) {
 }
 
 //helper method for postorder traversal
-void BST::postorder(TreeNode* node, bool& first) {
+void BST::postorder(BSTNode* node, bool& first) {
     if (node == nullptr)
         return;
 
@@ -158,52 +158,8 @@ void BST::postorder(TreeNode* node, bool& first) {
     first = false;
 }
 
-//a private method to search if the given key exists in the BST
-bool BST::searchKey(int key) {
-    return search(root, key);
-}
-
-//a private method to find the lowest common ancestor of the given keys
-TreeNode* BST:: findLowestCommonAncestor(TreeNode* node, int A, int B) {
-    if (node == nullptr)
-        return nullptr;
-
-    if (node->item == A || node->item == B)
-        return node;
-
-    if (A < node->item && B < node->item)
-        return findLowestCommonAncestor(node->leftChildPtr, A, B);
-
-    if (A > node->item && B > node->item)
-        return findLowestCommonAncestor(node->rightChildPtr, A, B);
-
-    return node;
-}
-
-//a public method to insert the key to BST in the constructor
-void BST::insertKeyForConstructor(int key) {
-    if(!searchKey(key)) {
-        root = insert(root, key);
-
-        if(defaultConstructorIsUsed)
-            numberOfNodes++;
-    }
-}
-
-void BST::deleteKeyForConstructor(int key) {
-    if(searchKey(key)) {
-        root = deleteNode(root, key);
-
-        if(defaultConstructorIsUsed)
-            numberOfNodes--;
-    }
-}
-
-int BST::getHeight() {
-    return getHeight(root) + 1;
-}
-
-void findMaxSumPath(TreeNode* node, int currentSum, int &maxSum, LinkedList<int>& currentPath, LinkedList<int>& maxPathList){
+//helper method to find the path from root to a leaf node which has the maximum sum of the keys included in the path
+void BST::findMaxSumPath(BSTNode* node, int currentSum, int &maxSum, LinkedList<int>& currentPath, LinkedList<int>& maxPathList){
     if (node == nullptr)
         return;
 
@@ -228,6 +184,47 @@ void findMaxSumPath(TreeNode* node, int currentSum, int &maxSum, LinkedList<int>
     currentPath.remove(currentPath.getLength());
 }
 
+//a private method to search if the given key exists in the BST
+bool BST::searchKey(int key) {
+    return search(root, key);
+}
+
+//a private method to find the lowest common ancestor of the given keys
+BSTNode* BST:: findLowestCommonAncestor(BSTNode* node, int A, int B) {
+    if (node == nullptr)
+        return nullptr;
+
+    if (node->item == A || node->item == B)
+        return node;
+
+    if (A < node->item && B < node->item)
+        return findLowestCommonAncestor(node->leftChildPtr, A, B);
+
+    if (A > node->item && B > node->item)
+        return findLowestCommonAncestor(node->rightChildPtr, A, B);
+
+    return node;
+}
+
+//a public method to insert the key to BST in the constructor, it should be used if there should not be any printing operations
+void BST::insertKeyForConstructor(int key) {
+    if(!searchKey(key))
+        root = insert(root, key);
+
+}
+
+//a public method to delete the given key from the BST in the constructor, it should be used if there should not be any printing operations
+void BST::deleteKeyForConstructor(int key) {
+    if(searchKey(key))
+        root = deleteNode(root, key);
+
+}
+
+//a public method to get the height of the tree
+int BST::getHeight() {
+    return getHeight(root) + 1;
+}
+
 //a public method for inserting the key to BST if the given key does not already exist
 void BST::insertKey(int key) {
     if(searchKey(key))
@@ -235,22 +232,16 @@ void BST::insertKey(int key) {
     else {
         root = insert(root, key);
         cout << "Key " << key << " is added!" << endl;
-
-        if(defaultConstructorIsUsed)
-            numberOfNodes++;
     }
 }
 
 //a public method to delete the given key if it exists
 void BST::deleteKey(int key) {
     if(!searchKey(key))
-        cout << "Key " << key << " is not deleted. It does not exists in the BST." << endl;
+        cout << "Key " << key << " is not deleted. It does not exist in the BST." << endl;
     else {
         root = deleteNode(root, key);
         cout << "Key " << key << " is deleted." << endl;
-
-        if(defaultConstructorIsUsed)
-            numberOfNodes--;
     }
 }
 
@@ -272,7 +263,7 @@ void BST::displayInorder() {
 }
 
 //a public method to display the postorder traversal of the BST
-void BST::displayPostOrder() {
+void BST::displayPostorder() {
     cout << "Postorder display is: ";
     bool first = true;
     postorder(root, first);
@@ -281,7 +272,7 @@ void BST::displayPostOrder() {
 
 //a public method that finds the maximum level at which the tree is a full binary tree
 void BST::findFullBTLevel() {
-    ListQueue<TreeNode*> q;
+    ListQueue<BSTNode*> q;
     q.enqueue(root);
     int level = 1;
     int maxFullLevel = -1;
@@ -295,7 +286,7 @@ void BST::findFullBTLevel() {
             isDone = true;
 
         for (int i = 0; i < size && !isDone; i++) {
-            TreeNode* node = q.peekFront();
+            BSTNode* node = q.peekFront();
             q.dequeue();
 
             int childCount = (node->leftChildPtr ? 1 : 0) + (node->rightChildPtr ? 1 : 0);
@@ -322,32 +313,31 @@ void BST::findFullBTLevel() {
         cout << "The tree is empty." << endl;
 }
 
-
+//public method to find the lowest common ancestor of the given keys A and B, it also checks if the give keys exist in the BST
 void BST::lowestCommonAncestor(int A, int B) {
     bool bothKeysExists = searchKey(A) && searchKey(B);
 
     if(bothKeysExists) {
-        TreeNode* lowestCommonAncestor = findLowestCommonAncestor(root, A, B);
+        BSTNode* lowestCommonAncestor = findLowestCommonAncestor(root, A, B);
         cout << "Lowest common ancestor of " << A << " and " << B << " is: " << lowestCommonAncestor->item << endl;
     }
     else
         cout << "Key does not exist." << endl;
 }
 
+//a public method to find the path from root a leaf node which has the maximum sum of the keys included in the path
 void BST::maximumSumPath() {
     if (root == nullptr) {
         cout << "The tree is empty." << endl;
         return;
     }
 
-    int maxSum = INT_MIN;  // Track the highest sum found
-    LinkedList<int> currentPath;  // Path being explored
-    LinkedList<int> maxPathList;  // Path with maximum sum
+    int maxSum = INT_MIN;
+    LinkedList<int> currentPath;
+    LinkedList<int> maxPathList;
 
-    // Call the recursive helper
     findMaxSumPath(root, 0, maxSum, currentPath, maxPathList);
 
-    // Print the results
     cout << "Maximum sum path is: ";
     for (int i = 1; i <= maxPathList.getLength(); i++) {
         if(i == maxPathList.getLength())
@@ -358,17 +348,17 @@ void BST::maximumSumPath() {
     cout << endl;
 }
 
+//a public method to find the level of the tree which has the maximum number of nodes and displays its keys from left to right
 void BST::maximumWidth() {
     if (root == nullptr) {
         cout << "The tree is empty." << endl;
         return;
     }
 
-    ListQueue<TreeNode*> q;
+    ListQueue<BSTNode*> q;
     q.enqueue(root);
     int level = 1;
     int maxWidth = 0;
-    int maxWidthLevel = 1;
 
     LinkedList<int> maxWidthNodes;
 
@@ -378,7 +368,7 @@ void BST::maximumWidth() {
         LinkedList<int> currentLevelNodes;
 
         for (int i = 0; i < size; i++) {
-            TreeNode* node = q.peekFront();
+            BSTNode* node = q.peekFront();
             q.dequeue();
 
             currentLevelNodes.insert(currentLevelNodes.getLength() + 1, node->item);
@@ -389,7 +379,6 @@ void BST::maximumWidth() {
 
         if (size > maxWidth) {
             maxWidth = size;
-            maxWidthLevel = level;
 
             maxWidthNodes.clear();
             for (int i = 1; i <= currentLevelNodes.getLength(); i++) {
@@ -410,6 +399,7 @@ void BST::maximumWidth() {
     }
     cout << endl;
 }
+
 
 
 

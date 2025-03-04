@@ -1,3 +1,13 @@
+/**
+* Title: Binary Search Trees
+* Author : Berkay Simsek
+* ID: 22303338
+* Section : 2
+* Homework : 1
+* Description : This file contains both of the interfaces and the implementations of the functions for the linked list. This style is preferred due to
+*the template declarations.
+*/
+
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
@@ -23,28 +33,14 @@ public:
     ItemType& getEntry(int position) const;
 };
 
+//default constructor
 template<class ItemType>
 LinkedList<ItemType>::LinkedList() {
     headPtr = nullptr;
     itemCount = 0;
 }
 
-template< class ItemType>
-bool LinkedList<ItemType>::isEmpty() const{
-    return itemCount == 0;
-}
-
-template< class ItemType>
-int LinkedList<ItemType>::getLength() const{
-    return itemCount;
-}
-
-template< class ItemType>
-ItemType& LinkedList<ItemType>::getEntry(int position) const {
-    Node<ItemType>* nodePtr = getNodeAt(position);
-    return nodePtr->getItem();
-}
-
+//a helper method to get the entry at the given position, used in "getEntry" function
 template< class ItemType>
 Node<ItemType>* LinkedList<ItemType>::getNodeAt(int position) const {
     Node<ItemType>* curPtr = headPtr;
@@ -53,6 +49,26 @@ Node<ItemType>* LinkedList<ItemType>::getNodeAt(int position) const {
     return curPtr ;
 }
 
+//a public method to check whether the linked is empty or not
+template< class ItemType>
+bool LinkedList<ItemType>::isEmpty() const{
+    return itemCount == 0;
+}
+
+//a public method to get the length of the linked list
+template< class ItemType>
+int LinkedList<ItemType>::getLength() const{
+    return itemCount;
+}
+
+//a public method to get the item at the given position
+template< class ItemType>
+ItemType& LinkedList<ItemType>::getEntry(int position) const {
+    Node<ItemType>* nodePtr = getNodeAt(position);
+    return nodePtr->getItem();
+}
+
+//a public method to insert an item to the given position in linked list if the position is valid
 template< class ItemType>
 void LinkedList<ItemType>::insert(int newPosition, const ItemType& newEntry) {
     if(newPosition >= 1 && newPosition <= itemCount + 1) {
@@ -70,6 +86,7 @@ void LinkedList<ItemType>::insert(int newPosition, const ItemType& newEntry) {
     }
 }
 
+//a public method to remove an item from the linked list found at the given position if it is valid
 template<class ItemType>
 void LinkedList<ItemType>::remove(int position) {
     if(position >= 1 && position <= itemCount)
@@ -91,12 +108,14 @@ void LinkedList<ItemType>::remove(int position) {
     }
 }
 
+//a public method to remove all the items in the linked list
 template< class ItemType>
 void LinkedList<ItemType>::clear() {
     while (!isEmpty())
         remove(1);
 }
 
+//destructor
 template< class ItemType>
 LinkedList<ItemType>::~LinkedList() {
     clear();

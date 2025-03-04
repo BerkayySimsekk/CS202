@@ -1,3 +1,12 @@
+/**
+* Title: Binary Search Trees
+* Author : Berkay Simsek
+* ID: 22303338
+* Section : 2
+* Homework : 1
+* Description : This file contains the pure virtual functions of linked list that must be overridden in the derived classes; in this case, "LinkedList.cpp" file.
+*/
+
 #ifndef LISTINTERFACE_H
 #define LISTINTERFACE_H
 

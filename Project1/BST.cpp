@@ -126,9 +126,9 @@ BSTNode* BST::deleteNode(BSTNode* node, int key) {
             return temp;
         }
 
-        BSTNode* temp = findMin(node->rightChildPtr);  // Find inorder successor
-        node->item = temp->item;  // Replace node with successor value
-        node->rightChildPtr = deleteNode(node->rightChildPtr, temp->item); // Delete successor
+        BSTNode* temp = findMin(node->rightChildPtr);
+        node->item = temp->item;  
+        node->rightChildPtr = deleteNode(node->rightChildPtr, temp->item); 
     }
     return node;
 }

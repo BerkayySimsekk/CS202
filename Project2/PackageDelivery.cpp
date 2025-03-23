@@ -13,7 +13,7 @@
 #include <fstream>
 #include <iostream>
 
-//Inside the loops to read the text files for the drones and packages the white spaces and the end of lines are automatically
+//Inside the loops, the white spaces and the end of lines are automatically to read the text files for the drones and packages are 
 //disregarded. Hence, the double values can be directly read by keeping a count and resetting it at the final count.
 PackageDelivery::PackageDelivery(const string droneFile, const string packageFile) {
     ifstream inputFilePackage(packageFile);

@@ -16,6 +16,7 @@ template<class HeapItemType>
 class Heap {
 public:
     Heap();
+    ~Heap();
 
     bool heapIsEmpty() const;
     void heapInsert(const HeapItemType& newItem);
@@ -34,6 +35,14 @@ private:
 template<class HeapItemType>
 Heap<HeapItemType>::Heap() {
     size = 0;
+}
+
+template<class HeapItemType>
+Heap<HeapItemType>::~Heap() {
+    for (int i = 0; i < size; i++) {
+        delete items[i];
+        items[i] = nullptr;
+    }
 }
 
 template<class HeapItemType>

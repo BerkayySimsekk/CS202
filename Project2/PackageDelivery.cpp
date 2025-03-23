@@ -127,6 +127,9 @@ void PackageDelivery::simulation() {
             cout << "Drone " << currentTask->getDrone()->getID() << " Package " << currentTask->getPackage()->getID() << " at tick " << tick << " (delivery time: " << currentTask->getCompletionTime() << ", battery life: " << currentTask->getDrone()->getBatteryLife() << ")" << endl;
 
             taskHeap.heapDelete();
+
+            delete currentTask->getPackage();
+            delete currentTask;
             currentTask = nullptr;
 
             tick++;

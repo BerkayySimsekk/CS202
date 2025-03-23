@@ -1,22 +1,34 @@
+/**
+* Author : Berkay Simsek
+* ID: 22303338
+* Section : 2
+* Homework : 2
+* Description : This file contains the implementations of the methods that can be seen in the header file.
+*/
+
 #include "Drone.h"
 
 Drone::Drone() {
     ID = -1;
     batteryLife = -1;
     speed = -1;
+    x = 0;
+    y = 0;
 }
 
 Drone::Drone(int droneID, double droneBatteryLife, double droneSpeed) {
     ID = droneID;
     batteryLife = droneBatteryLife;
     speed = droneSpeed;
+    x = 0;
+    y = 0;
 }
 
-int Drone::getX() const {
+double Drone::getX() const {
     return x;
 }
 
-int Drone::getY() const {
+double Drone::getY() const {
     return y;
 }
 
@@ -32,11 +44,11 @@ double Drone::getSpeed() const {
     return speed;
 }
 
-void Drone::setX(int droneXCoordinate) {
+void Drone::setX(double droneXCoordinate) {
     x = droneXCoordinate;
 }
 
-void Drone::setY(int droneYCoordinate) {
+void Drone::setY(double droneYCoordinate) {
     y = droneYCoordinate;
 }
 
@@ -50,5 +62,14 @@ void Drone::setSpeed(double droneSpeed) {
 
 void Drone::setID(int droneID) {
     ID = droneID;
+}
+
+bool Drone::compareForHeap(Drone* drone) const {
+    if(batteryLife > drone->batteryLife)
+        return true;
+    else if(batteryLife < drone->batteryLife)
+        return false;
+    else
+        return ID < drone->ID;
 }
 

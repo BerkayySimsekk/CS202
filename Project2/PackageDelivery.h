@@ -1,3 +1,11 @@
+/**
+* Author : Berkay Simsek
+* ID: 22303338
+* Section : 2
+* Homework : 2
+* Description : This file contains the interfaces of the functions for the package delivery class.
+*/
+
 #ifndef PACKAGEDELIVERY_H
 #define PACKAGEDELIVERY_H
 
@@ -9,17 +17,12 @@
 
 using namespace std;
 
-const double MAX_PACKAGE_WEIGHT = 10;
-const double WEIGHT_FACTOR = 0.2;
-const double BATTERY_FACTOR = 0.3;
-const int COOLDOWN_PERIOD = 5;
-const double MAX_BATTERY = 300;
-
 class PackageDelivery {
 public:
     PackageDelivery(const string droneFile, const string packageFile);
     void simulation();
 
+private:
     Heap<Package*> packageHeap;
     Heap<Drone*> droneHeap;
     Heap<Task*> taskHeap;

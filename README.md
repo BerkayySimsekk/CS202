@@ -16,3 +16,9 @@ Repository includes my solutions for the course Fundamental Structures of Comput
     completes the task, its battery is updated and it is reinserted into the available pool; if not, it enters a cooldown state.
     - `Content` : Object-oriented programming that implements the described simulation process by using heaps. There are seperate classes for drones, packages and tasks. The methods to check whether the cooldown process should be entered and to start the cooldown process 
     are implemented in the task class.
+
+- `Project 3` : Hash Table
+    - `Aim` : To implement two different hash tables. The first one handles collisions by quadratic probing and the second one handles them by separate chaining method.
+    - `Public Member Functions` : Both of hash tables have the same functions which are to insert, delete, and search for items. Items in this case are String objects.
+    - `Content` : Object-oriented programming that implements all of the previously stated functions by using the mentioned methods to handle the collisions. The hash table that handles the collisions by quadratic probing stores the items in one-dimensional statically
+    allocated array and the one that handles the collisions by separate chaining method stores the items in two-dimensional statically allocated array.

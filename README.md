@@ -32,4 +32,4 @@ Repository includes my solutions for the course Fundamental Structures of Comput
     - `Public Member Functions` : There are two public functions. First one simulates the spreading process according to which nodes in the graph are dispatchers and malwares. Second one removes the connections between
     dispatcher and malware nodes to prevent further contamination; also, it prints out the connected zones after removing the necessary connections.
     - `Content` : Object-oriented programming that implements all of the previously stated functions by using Dijkstra's shortest path algorithm and slightly altered breadth-first search algorithm. A Queue object that is 
-    implemented by using linked list is used to implement the breadth-first search algorithm.
+    implemented by using linked list is used to implement the breadth-first search algorithm. There is also a method to read a given file with certain word-per-line constraints and create the graph with given nodes and edges.
